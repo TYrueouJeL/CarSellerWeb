@@ -16,4 +16,7 @@ export interface ApiDefinition {
       show: typeof routes['profile.profile.show']
     }
   }
+  salableVehicles: {
+    index: typeof routes['salable_vehicles.index']
+  }
 }

@@ -32,6 +32,49 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class BrandSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = BrandSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class CategorySchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = CategorySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class ModelSchema extends BaseModel {
+  static $columns = ['brandId', 'categoryId', 'createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = ModelSchema.$columns
+  @column()
+  declare brandId: number | null
+  @column()
+  declare categoryId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'firstname', 'id', 'lastname', 'password', 'phoneNumber', 'roles', 'type', 'updatedAt'] as const
   $columns = UserSchema.$columns
@@ -55,4 +98,31 @@ export class UserSchema extends BaseModel {
   declare type: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+}
+
+export class VehicleSchema extends BaseModel {
+  static $columns = ['createdAt', 'customerId', 'dailyPrice', 'id', 'mileage', 'modelId', 'price', 'registration', 'type', 'updatedAt', 'year'] as const
+  $columns = VehicleSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare customerId: number | null
+  @column()
+  declare dailyPrice: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare mileage: string
+  @column()
+  declare modelId: number | null
+  @column()
+  declare price: string | null
+  @column()
+  declare registration: string
+  @column()
+  declare type: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare year: number
 }

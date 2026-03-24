@@ -9,7 +9,7 @@ export type ParamValue = string | number | bigint | boolean
 export interface Registry {
   'auth.new_account.store': {
     methods: ["POST"]
-    pattern: '/api/v1/auth/signup'
+    pattern: '/auth/signup'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/user').signupValidator)>>
       paramsTuple: []
@@ -21,7 +21,7 @@ export interface Registry {
   }
   'auth.access_token.store': {
     methods: ["POST"]
-    pattern: '/api/v1/auth/login'
+    pattern: '/auth/login'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/user').loginValidator)>>
       paramsTuple: []
@@ -33,7 +33,7 @@ export interface Registry {
   }
   'auth.access_token.destroy': {
     methods: ["POST"]
-    pattern: '/api/v1/auth/logout'
+    pattern: '/auth/logout'
     types: {
       body: {}
       paramsTuple: []
@@ -45,7 +45,7 @@ export interface Registry {
   }
   'profile.profile.show': {
     methods: ["GET","HEAD"]
-    pattern: '/api/v1/account/profile'
+    pattern: '/account/profile'
     types: {
       body: {}
       paramsTuple: []
@@ -53,6 +53,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/profile_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/profile_controller').default['show']>>>
+    }
+  }
+  'salable_vehicles.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/salablevehicle'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/salableVehicle').listSalableVehiclesValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
 }

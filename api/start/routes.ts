@@ -17,21 +17,23 @@ router.get('/', () => {
 
 router
   .group(() => {
-    router
-      .group(() => {
-        router.post('signup', [controllers.NewAccount, 'store'])
-        router.post('login', [controllers.AccessToken, 'store'])
-        router.post('logout', [controllers.AccessToken, 'destroy']).use(middleware.auth())
-      })
-      .prefix('auth')
-      .as('auth')
-
-    router
-      .group(() => {
-        router.get('/profile', [controllers.Profile, 'show'])
-      })
-      .prefix('account')
-      .as('profile')
-      .use(middleware.auth())
+    router.post('signup', [controllers.NewAccount, 'store'])
+    router.post('login', [controllers.AccessToken, 'store'])
+    router.post('logout', [controllers.AccessToken, 'destroy']).use(middleware.auth())
   })
-  .prefix('/api/v1')
+  .prefix('auth')
+  .as('auth')
+
+router
+  .group(() => {
+    router.get('/profile', [controllers.Profile, 'show'])
+  })
+  .prefix('account')
+  .as('profile')
+  .use(middleware.auth())
+
+router
+  .group(() => {
+    router.get('/', [controllers.SalableVehicles, 'index'])
+  })
+  .prefix('salablevehicle')

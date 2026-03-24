@@ -6,10 +6,15 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type UserTransformer from '#transformers/user_transformer'
+import type SalableVehicleTransformer from '#transformers/salable_vehicle_transformer'
 
 export namespace Data {
   export type User = InferData<UserTransformer>
   export namespace User {
     export type Variants = InferVariants<UserTransformer>
+  }
+  export type SalableVehicle = InferData<SalableVehicleTransformer>
+  export namespace SalableVehicle {
+    export type Variants = InferVariants<SalableVehicleTransformer>
   }
 }
