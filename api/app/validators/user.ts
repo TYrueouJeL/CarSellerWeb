@@ -12,7 +12,7 @@ const password = () => vine.string().minLength(8).maxLength(32)
 export const signupValidator = vine.create({
   firstname: vine.string(),
   lastname: vine.string(),
-  email: email().unique({ table: 'users', column: 'email' }),
+  email: email().unique({ table: 'user', column: 'email' }),
   password: password(),
   passwordConfirmation: password().sameAs('password'),
 })

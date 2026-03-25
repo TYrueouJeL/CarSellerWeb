@@ -20,7 +20,7 @@ export default class SalableVehicleTransformer {
           }
         : undefined,
     };
-  }
+  } 
 
   static transformCollection(vehicles: SalableVehicle[]) {
     return vehicles.map((v) => this.transform(v));

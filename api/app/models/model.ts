@@ -5,6 +5,8 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Category from './category.ts'
 
 export default class Model extends ModelSchema {
+    static table = 'model'
+    
     @belongsTo(() => Brand)
     declare brand: BelongsTo<typeof Brand>
 
