@@ -14,7 +14,7 @@ export interface UpdateSalableVehicleDTO {
     price?: string
 }
 
-export interface SalableVehicleDTO {
+export interface SalableVehicle {
     modelId: number
     year: number
     registration: string
