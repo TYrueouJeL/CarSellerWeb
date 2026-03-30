@@ -1,7 +1,6 @@
 import Vehicle from "#models/vehicle"
 import Model from "#models/model"
 import { faker } from '@faker-js/faker'
-import ModelFactory from "./modelFactory.ts"
 
 type VehicleType = {
     modelId?: number

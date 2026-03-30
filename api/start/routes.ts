@@ -35,5 +35,9 @@ router
 router
   .group(() => {
     router.get('/', [controllers.SalableVehicles, 'index'])
+    router.get('/:vehicleId', [controllers.SalableVehicles, 'show'])
+    router.post('/', [controllers.SalableVehicles, 'store'])
+    router.put('/:vehicleId', [controllers.SalableVehicles, 'update'])
+    router.delete('/:vehicleId', [controllers.SalableVehicles, 'delete'])
   })
   .prefix('salablevehicle')

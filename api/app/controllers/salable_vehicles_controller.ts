@@ -1,6 +1,6 @@
 import type { HttpContext } from "@adonisjs/core/http";
 import SalableVehicleService from "#services/salableVehicleService";
-import { listSalableVehiclesValidator } from "#validators/salableVehicle";
+import { createSalableVehicleValidator, listSalableVehiclesValidator, updateSalableVehicleValidator } from "#validators/salableVehicle";
 import SalableVehicleTransformer from "#transformers/salable_vehicle_transformer";
 import { ModelPaginatorContract } from "@adonisjs/lucid/types/model";
 import SalableVehicle from "#models/salable_vehicle";
@@ -39,5 +39,41 @@ export default class SalableVehiclesController {
         return response.json({
             data: SalableVehicleTransformer.transformCollection(result)
         })
+    }
+
+    public async show({ response, params, request }: HttpContext) {
+        const vehicleId = params.vehicleId;
+        const preloads = request.qs().preloads ? request.qs().preloads.split(',') : [];
+        const vehicle = await this.salableVehicleService.findById(vehicleId, preloads)
+
+        if (!vehicle) {
+            return response.notFound({ message: "Vehicle not found" })
+        }
+
+        return response.json({
+            data: SalableVehicleTransformer.transform(vehicle),
+        })
+    }
+
+    public async store({ request, response }: HttpContext) {
+        const data = await request.validateUsing(createSalableVehicleValidator);
+        const vehicle = await this.salableVehicleService.create(data);
+        return response.created({
+            data: SalableVehicleTransformer.transform(vehicle),
+        })
+    }
+
+    public async update({ request, response, params }: HttpContext) {
+        const data = await request.validateUsing(updateSalableVehicleValidator);
+        const vehicle = await this.salableVehicleService.update(params.vehicleId, data);
+        return response.ok({
+            data: SalableVehicleTransformer.transform(vehicle),
+        })
+    }
+
+    public async delete({ response, params }: HttpContext) {
+        const vehicleId = params.vehicleId;
+        await this.salableVehicleService.delete(vehicleId);
+        return response.noContent();
     }
 }

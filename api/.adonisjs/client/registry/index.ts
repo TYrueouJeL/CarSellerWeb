@@ -36,6 +36,30 @@ const routes = {
     tokens: [{"old":"/salablevehicle","type":0,"val":"salablevehicle","end":""}],
     types: placeholder as Registry['salable_vehicles.index']['types'],
   },
+  'salable_vehicles.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/salablevehicle/:vehicleId',
+    tokens: [{"old":"/salablevehicle/:vehicleId","type":0,"val":"salablevehicle","end":""},{"old":"/salablevehicle/:vehicleId","type":1,"val":"vehicleId","end":""}],
+    types: placeholder as Registry['salable_vehicles.show']['types'],
+  },
+  'salable_vehicles.store': {
+    methods: ["POST"],
+    pattern: '/salablevehicle',
+    tokens: [{"old":"/salablevehicle","type":0,"val":"salablevehicle","end":""}],
+    types: placeholder as Registry['salable_vehicles.store']['types'],
+  },
+  'salable_vehicles.update': {
+    methods: ["PUT"],
+    pattern: '/salablevehicle/:vehicleId',
+    tokens: [{"old":"/salablevehicle/:vehicleId","type":0,"val":"salablevehicle","end":""},{"old":"/salablevehicle/:vehicleId","type":1,"val":"vehicleId","end":""}],
+    types: placeholder as Registry['salable_vehicles.update']['types'],
+  },
+  'salable_vehicles.delete': {
+    methods: ["DELETE"],
+    pattern: '/salablevehicle/:vehicleId',
+    tokens: [{"old":"/salablevehicle/:vehicleId","type":0,"val":"salablevehicle","end":""},{"old":"/salablevehicle/:vehicleId","type":1,"val":"vehicleId","end":""}],
+    types: placeholder as Registry['salable_vehicles.delete']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

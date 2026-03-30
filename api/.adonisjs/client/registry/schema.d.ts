@@ -67,4 +67,52 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'salable_vehicles.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/salablevehicle/:vehicleId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { vehicleId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['show']>>>
+    }
+  }
+  'salable_vehicles.store': {
+    methods: ["POST"]
+    pattern: '/salablevehicle'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/salableVehicle').createSalableVehicleValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/salableVehicle').createSalableVehicleValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'salable_vehicles.update': {
+    methods: ["PUT"]
+    pattern: '/salablevehicle/:vehicleId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/salableVehicle').updateSalableVehicleValidator)>>
+      paramsTuple: [ParamValue]
+      params: { vehicleId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/salableVehicle').updateSalableVehicleValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'salable_vehicles.delete': {
+    methods: ["DELETE"]
+    pattern: '/salablevehicle/:vehicleId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { vehicleId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['delete']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['delete']>>>
+    }
+  }
 }

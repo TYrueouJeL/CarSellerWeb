@@ -1,5 +1,6 @@
 import SalableVehicle from "#models/salable_vehicle";
 import { ModelPaginatorContract } from "@adonisjs/lucid/types/model";
+import { CreateSalableVehicleDTO, UpdateSalableVehicleDTO } from "../dto/salableVehicleDTO.ts";
 
 interface ListOptions {
     page?: number;
@@ -82,5 +83,37 @@ export default class SalableVehicleService {
         }
 
         return await query;
+    }
+
+    public async findById(vehicleId: number, preloads: string[] = []): Promise<SalableVehicle | null> {
+        const query = SalableVehicle.query().where('id', vehicleId);
+        
+        for (const relation of preloads) {
+            query.preload(relation as any);
+        }
+        
+        return await query.first();
+    }
+
+    public async create(data: CreateSalableVehicleDTO): Promise<SalableVehicle> {
+        return await SalableVehicle.create(data);
+    }
+
+    public async update(vehicleId: number, data: UpdateSalableVehicleDTO): Promise<SalableVehicle> {
+        const vehicle = await SalableVehicle.find(vehicleId);
+        if (!vehicle) {
+            throw new Error("Vehicle not found");
+        }
+        vehicle.merge(data);
+        await vehicle.save();
+        return vehicle;
+    }
+
+    public async delete(vehicleId: number): Promise<void> {
+        const vehicle = await SalableVehicle.find(vehicleId);
+        if (!vehicle) {
+            throw new Error("Vehicle not found");
+        }
+        await vehicle.delete();
     }
 }

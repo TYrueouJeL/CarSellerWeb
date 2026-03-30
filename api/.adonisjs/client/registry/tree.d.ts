@@ -18,5 +18,9 @@ export interface ApiDefinition {
   }
   salableVehicles: {
     index: typeof routes['salable_vehicles.index']
+    show: typeof routes['salable_vehicles.show']
+    store: typeof routes['salable_vehicles.store']
+    update: typeof routes['salable_vehicles.update']
+    delete: typeof routes['salable_vehicles.delete']
   }
 }

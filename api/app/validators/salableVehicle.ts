@@ -23,3 +23,19 @@ export const listSalableVehiclesValidator = vine.create({
     .optional(),
     order_dir: vine.enum(["asc", "desc"]).optional(),
 });
+
+export const createSalableVehicleValidator = vine.create({
+    modelId: vine.number(),
+    year: vine.number(),
+    registration: vine.string().regex(/^[A-Z]{2}-\d{3}-[A-Z]{2}$/),
+    mileage: vine.string(),
+    price: vine.string(),
+});
+
+export const updateSalableVehicleValidator = vine.create({
+    modelId: vine.number().optional(),
+    year: vine.number().optional(),
+    registration: vine.string().regex(/^[A-Z]{2}-\d{3}-[A-Z]{2}$/).optional(),
+    mileage: vine.string().optional(),
+    price: vine.string().optional(),
+});
