@@ -1,8 +1,9 @@
 import type { User } from "~/types/user"
-
-const apiUrl = import.meta.env.API_URL
+import { defineStore } from "pinia"
 
 export const useAuthStore = defineStore('auth', () => {
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.apiUrl
     const user = ref<User | null>(null)
     const token = useCookie('token')
     const loading = ref(false)
@@ -38,8 +39,10 @@ export const useAuthStore = defineStore('auth', () => {
         loading.value = true
         error.value = null
         
+        console.log('Tentative de connexion avec:', email)
+        
         try {
-            const data = await $fetch<{ token: string; user: User }>(`${apiUrl}/auth/login`, {
+            const data = await $fetch<{ data: { token: string; user: User } }>(`${apiUrl}/auth/login`, {
                 method: 'POST',
                 body: {
                     email,
@@ -47,11 +50,18 @@ export const useAuthStore = defineStore('auth', () => {
                 }
             })
 
-            user.value = data.user
-            token.value = data.token
+            console.log('Réponse API:', data)
+
+            user.value = data.data.user
+            token.value = data.data.token
+
+            console.log('User défini:', user.value)
+            console.log('Token défini:', token.value)
+            console.log('isLoggedIn:', isLoggedIn.value)
 
             await navigateTo('/')
         } catch (err: any) {
+            console.error('Erreur de connexion:', err)
             error.value = err?.data?.message ?? 'Erreur lors de la connexion'
         } finally {
             loading.value = false
@@ -59,20 +69,41 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     async function me() {
-        if (!token.value) return
+        if (!token.value) {
+            console.log('me(): pas de token, retour')
+            return
+        }
 
+        console.log('me(): appel API avec token:', token.value)
+        
         try {
-            const data = await $fetch<{ user: User }>(`${apiUrl}/auth/me`, {
+            const data = await $fetch<{ data: { user: User } }>(`${apiUrl}/auth/me`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token.value}`
                 }
             })
 
-            user.value = data.user
+            console.log('me(): réponse API:', data)
+            user.value = data.data.user
+            console.log('me(): user défini:', user.value)
         } catch (err: any) {
+            console.error('me(): erreur:', err)
             error.value = err?.data?.message ?? 'Erreur lors de la récupération des informations'
         }
+    }
+
+    async function logout() {
+        await $fetch(`${apiUrl}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token.value}`
+            }
+        })
+        user.value = null
+        token.value = null
+        
+        await navigateTo('/')
     }
 
     return {
@@ -83,6 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
         isLoggedIn,
         register,
         login,
-        me
+        me,
+        logout
     }
 })

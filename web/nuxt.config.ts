@@ -7,5 +7,10 @@ export default defineNuxtConfig({
     'nuxt-notify',
     '@nuxt/icon',
     '@pinia/nuxt'
-  ]
+  ],
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3333'
+    }
+  }
 })

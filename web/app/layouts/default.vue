@@ -15,13 +15,13 @@
 
         <div class="w-px h-5 bg-white/15 mx-2"></div>
 
-        <nuxt-link v-if="!auth.isLoggedIn" to="/connexion" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Connexion</nuxt-link>
-        <nuxt-link v-if="!auth.isLoggedIn" to="/inscription" class="text-white font-medium bg-blue-600 hover:bg-blue-500 border border-blue-400/30 px-4 py-1.5 rounded-md transition-all duration-200 hover:-translate-y-px">Inscription</nuxt-link>
+        <nuxt-link v-if="!auth.isLoggedIn" to="/auth/login" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Connexion</nuxt-link>
+        <nuxt-link v-if="!auth.isLoggedIn" to="/auth/register" class="text-white font-medium bg-blue-600 hover:bg-blue-500 border border-blue-400/30 px-4 py-1.5 rounded-md transition-all duration-200 hover:-translate-y-px">Inscription</nuxt-link>
         
         <nuxt-link v-if="auth.isLoggedIn" to="/rendez-vous" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Mes rendez-vous</nuxt-link>
         <nuxt-link v-if="auth.isLoggedIn" to="/tickets" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Mes tickets</nuxt-link>
         <nuxt-link v-if="auth.isLoggedIn" to="/compte" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Mon compte</nuxt-link>
-        <nuxt-link v-if="auth.isLoggedIn" to="/logout" class="text-red-400/75 hover:text-red-400 hover:bg-red-400/10 px-3 py-1.5 rounded-md transition-all duration-200">Déconnexion</nuxt-link>
+        <button v-if="auth.isLoggedIn" @click="auth.logout()" class="text-red-400/75 hover:text-red-400 hover:bg-red-400/10 px-3 py-1.5 rounded-md transition-all duration-200">Déconnexion</button>
       </nav>
     </div>
   </header>
@@ -33,8 +33,4 @@
 
 <script setup lang="ts">
 const auth = useAuthStore()
-
-onMounted(() => {
-  auth.me()
-})
 </script>
