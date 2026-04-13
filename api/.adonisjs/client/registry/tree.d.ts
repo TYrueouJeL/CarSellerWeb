@@ -23,4 +23,8 @@ export interface ApiDefinition {
     update: typeof routes['salable_vehicles.update']
     delete: typeof routes['salable_vehicles.delete']
   }
+  brands: {
+    index: typeof routes['brands.index']
+    show: typeof routes['brands.show']
+  }
 }

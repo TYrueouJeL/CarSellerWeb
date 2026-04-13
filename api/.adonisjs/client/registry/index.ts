@@ -60,6 +60,18 @@ const routes = {
     tokens: [{"old":"/salablevehicle/:vehicleId","type":0,"val":"salablevehicle","end":""},{"old":"/salablevehicle/:vehicleId","type":1,"val":"vehicleId","end":""}],
     types: placeholder as Registry['salable_vehicles.delete']['types'],
   },
+  'brands.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/brand',
+    tokens: [{"old":"/brand","type":0,"val":"brand","end":""}],
+    types: placeholder as Registry['brands.index']['types'],
+  },
+  'brands.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/brand/:brandId',
+    tokens: [{"old":"/brand/:brandId","type":0,"val":"brand","end":""},{"old":"/brand/:brandId","type":1,"val":"brandId","end":""}],
+    types: placeholder as Registry['brands.show']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

@@ -13,16 +13,22 @@ export type ScannedRoutes = {
     'salable_vehicles.store': { paramsTuple?: []; params?: {} }
     'salable_vehicles.update': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
     'salable_vehicles.delete': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
+    'brands.index': { paramsTuple?: []; params?: {} }
+    'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
   }
   GET: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'salable_vehicles.index': { paramsTuple?: []; params?: {} }
     'salable_vehicles.show': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
+    'brands.index': { paramsTuple?: []; params?: {} }
+    'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
   }
   HEAD: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
     'salable_vehicles.index': { paramsTuple?: []; params?: {} }
     'salable_vehicles.show': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
+    'brands.index': { paramsTuple?: []; params?: {} }
+    'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
   }
   POST: {
     'auth.new_account.store': { paramsTuple?: []; params?: {} }

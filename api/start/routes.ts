@@ -41,3 +41,10 @@ router
     router.delete('/:vehicleId', [controllers.SalableVehicles, 'delete'])
   })
   .prefix('salablevehicle')
+
+router
+  .group(() => {
+    router.get('/', [controllers.Brands, 'index'])
+    router.get('/:brandId', [controllers.Brands, 'show'])
+  })
+  .prefix('brand')

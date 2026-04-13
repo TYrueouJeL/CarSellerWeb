@@ -115,4 +115,28 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/salable_vehicles_controller').default['delete']>>>
     }
   }
+  'brands.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/brand'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/brands_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/brands_controller').default['index']>>>
+    }
+  }
+  'brands.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/brand/:brandId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { brandId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/brands_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/brands_controller').default['show']>>>
+    }
+  }
 }
