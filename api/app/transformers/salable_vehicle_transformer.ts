@@ -17,6 +17,12 @@ export default class SalableVehicleTransformer {
         ? {
             id: vehicle.model.id,
             name: vehicle.model.name,
+            brand: vehicle.model.$preloaded.brand
+              ? {
+                  id: vehicle.model.brand.id,
+                  name: vehicle.model.brand.name,
+                }
+              : undefined,
           }
         : undefined,
     };

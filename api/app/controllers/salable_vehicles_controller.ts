@@ -10,6 +10,10 @@ export default class SalableVehiclesController {
 
     public async index({ request, response }: HttpContext) {
         const params = await request.validateUsing(listSalableVehiclesValidator);
+        const preloadsParam = request.qs().preloads;
+        const preloads = preloadsParam 
+            ? (Array.isArray(preloadsParam) ? preloadsParam : [preloadsParam])
+            : [];
 
         const result = await this.salableVehicleService.list({
             page: params.page,
@@ -26,6 +30,7 @@ export default class SalableVehiclesController {
             customerId: params.customer_id,
             orderBy: params.order_by,
             orderDir: params.order_dir,
+            preloads,
         });
 
         if (result && typeof result === 'object' && 'getMeta' in result) {

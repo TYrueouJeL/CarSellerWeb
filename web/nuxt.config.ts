@@ -12,5 +12,12 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3333'
     }
+  },
+  notify: {
+    position: 'top-right',
+    duration: 5000,
+    maxToasts: 5,
+    theme: 'dark',
+    showIcon: true
   }
 })

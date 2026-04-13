@@ -72,9 +72,18 @@ export default class SalableVehicleService {
         // Tri
         query.orderBy(orderBy, orderDir);
 
-        // Relations
-        for (const relation of preloads) {
-            query.preload(relation as any);
+        // Relations - handle nested preloads
+        for (const preloadPath of preloads) {
+            const parts = preloadPath.split('.');
+            if (parts.length === 1) {
+                // Simple preload like 'model'
+                query.preload(parts[0] as any);
+            } else if (parts.length === 2) {
+                // Nested preload like 'model.brand'
+                query.preload(parts[0] as any, (modelQuery) => {
+                    modelQuery.preload(parts[1] as any);
+                });
+            }
         }
 
         // Pagination optionnelle

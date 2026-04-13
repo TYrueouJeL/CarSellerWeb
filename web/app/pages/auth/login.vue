@@ -25,9 +25,15 @@
 
 <script setup lang="ts">
 const authStore = useAuthStore()
+const toast = useToast()
 const form = reactive({ email: '', password: '' })
 
 async function handleLogin() {
-    await authStore.login(form.email, form.password)
+    try {
+        await authStore.login(form.email, form.password)
+        toast.success('Connexion réussie', 'Bienvenue sur votre espace')
+    } catch (error) {
+        toast.error('Erreur de connexion', 'Email ou mot de passe incorrect')
+    }
 }
 </script>
