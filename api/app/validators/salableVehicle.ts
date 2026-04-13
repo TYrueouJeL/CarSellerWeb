@@ -17,6 +17,9 @@ export const listSalableVehiclesValidator = vine.create({
 
     available: vine.boolean().optional(),
     customer_id: vine.number().optional(),
+    
+    brand_ids: vine.string().optional(),
+    model_ids: vine.string().optional(),
 
     order_by: vine
     .enum(["price", "mileage", "year", "created_at"])

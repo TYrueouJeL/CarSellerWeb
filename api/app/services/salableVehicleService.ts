@@ -18,6 +18,9 @@ interface ListOptions {
     // Disponibilité
     available?: boolean;
     customerId?: number;
+    // Filtres par marque et modèle
+    brandIds?: string;
+    modelIds?: string;
     // Tri
     orderBy?: "price" | "mileage" | "year" | "created_at";
     orderDir?: "asc" | "desc";
@@ -41,6 +44,8 @@ export default class SalableVehicleService {
             maxMileage,
             available,
             customerId,
+            brandIds,
+            modelIds,
             orderBy = "created_at",
             orderDir = "desc",
             preloads = [],
@@ -68,6 +73,37 @@ export default class SalableVehicleService {
         if (available === true) query.whereNull("customer_id");
         if (available === false) query.whereNotNull("customer_id");
         if (customerId !== undefined) query.where("customer_id", customerId);
+
+        // Filtres par marque et modèle
+        if (brandIds !== undefined) {
+            const brandIdArray = brandIds.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+            if (brandIdArray.length > 0) {
+                if (brandIdArray.length === 1) {
+                    // Cas simple : une seule marque
+                    query.whereHas('model', (modelQuery) => {
+                        modelQuery.where('brandId', brandIdArray[0]);
+                    });
+                } else {
+                    // Cas multiple : plusieurs marques
+                    const placeholders = brandIdArray.map(() => '?').join(',');
+                    query.whereRaw(`model_id IN (SELECT id FROM model WHERE brandId IN (${placeholders}))`, brandIdArray);
+                }
+            }
+        }
+        
+        if (modelIds !== undefined) {
+            const modelIdArray = modelIds.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+            if (modelIdArray.length > 0) {
+                if (modelIdArray.length === 1) {
+                    // Cas simple : un seul modèle
+                    query.where('modelId', modelIdArray[0]);
+                } else {
+                    // Cas multiple : plusieurs modèles
+                    const placeholders = modelIdArray.map(() => '?').join(',');
+                    query.whereRaw(`model_id IN (${placeholders})`, modelIdArray);
+                }
+            }
+        }
 
         // Tri
         query.orderBy(orderBy, orderDir);

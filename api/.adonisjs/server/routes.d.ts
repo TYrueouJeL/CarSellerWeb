@@ -15,6 +15,8 @@ export type ScannedRoutes = {
     'salable_vehicles.delete': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
     'brands.index': { paramsTuple?: []; params?: {} }
     'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
+    'models.index': { paramsTuple?: []; params?: {} }
+    'models.show': { paramsTuple: [ParamValue]; params: {'modelId': ParamValue} }
   }
   GET: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
@@ -22,6 +24,8 @@ export type ScannedRoutes = {
     'salable_vehicles.show': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
     'brands.index': { paramsTuple?: []; params?: {} }
     'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
+    'models.index': { paramsTuple?: []; params?: {} }
+    'models.show': { paramsTuple: [ParamValue]; params: {'modelId': ParamValue} }
   }
   HEAD: {
     'profile.profile.show': { paramsTuple?: []; params?: {} }
@@ -29,6 +33,8 @@ export type ScannedRoutes = {
     'salable_vehicles.show': { paramsTuple: [ParamValue]; params: {'vehicleId': ParamValue} }
     'brands.index': { paramsTuple?: []; params?: {} }
     'brands.show': { paramsTuple: [ParamValue]; params: {'brandId': ParamValue} }
+    'models.index': { paramsTuple?: []; params?: {} }
+    'models.show': { paramsTuple: [ParamValue]; params: {'modelId': ParamValue} }
   }
   POST: {
     'auth.new_account.store': { paramsTuple?: []; params?: {} }

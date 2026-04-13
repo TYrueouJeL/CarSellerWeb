@@ -139,4 +139,28 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/brands_controller').default['show']>>>
     }
   }
+  'models.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/model'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/models_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/models_controller').default['index']>>>
+    }
+  }
+  'models.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/model/:modelId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { modelId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/models_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/models_controller').default['show']>>>
+    }
+  }
 }

@@ -48,3 +48,10 @@ router
     router.get('/:brandId', [controllers.Brands, 'show'])
   })
   .prefix('brand')
+
+router
+  .group(() => {
+    router.get('/', [controllers.Models, 'index'])
+    router.get('/:modelId', [controllers.Models, 'show'])
+  })
+  .prefix('model')

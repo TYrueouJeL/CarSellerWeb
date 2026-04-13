@@ -31,6 +31,58 @@
                         <input type="number" v-model.number="filterOptions.maxYear" placeholder="Année max" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
+
+                <!-- Filtre Marques -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Marques</h3>
+                    <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                            <input 
+                                type="radio" 
+                                :value="null" 
+                                v-model="selectedBrand"
+                                @change="onBrandChange"
+                                class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            >
+                            <span class="text-sm text-gray-700">Toutes</span>
+                        </label>
+                        <label v-for="brand in brands" :key="brand.id" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                            <input 
+                                type="radio" 
+                                :value="brand.id" 
+                                v-model="selectedBrand"
+                                @change="onBrandChange"
+                                class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            >
+                            <span class="text-sm text-gray-700">{{ brand.name }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filtre Modèles -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Modèles</h3>
+                    <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                            <input 
+                                type="radio" 
+                                :value="null" 
+                                v-model="selectedModel"
+                                class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            >
+                            <span class="text-sm text-gray-700">Tous</span>
+                        </label>
+                        <label v-for="model in models" :key="model.id" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                            <input 
+                                type="radio" 
+                                :value="model.id" 
+                                v-model="selectedModel"
+                                class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            >
+                            <span class="text-sm text-gray-700">{{ model.name }}</span>
+                        </label>
+                    </div>
+                </div>
                 
                                 
                 <!-- Filtre Tri -->
@@ -201,6 +253,10 @@
 
 <script setup lang="ts">
 import { useSalableVehicleService } from '~/services/salableVehicleService';
+import { useBrandService } from '~/services/brandService';
+import { useModelService } from '~/services/modelService';
+import type { Brand } from '~/services/brandService';
+import type { Model } from '~/services/modelService';
 
 const vehicles = ref<any[]>([]);
 const loading = ref<boolean>(true);
@@ -208,6 +264,12 @@ const error = ref<string | null>(null);
 const total = ref<number>(0);
 const currentPage = ref<number>(1);
 const totalPages = ref<number>(1);
+
+// Brands and models data
+const brands = ref<Brand[]>([]);
+const models = ref<Model[]>([]);
+const selectedBrand = ref<number | null>(null);
+const selectedModel = ref<number | null>(null);
 
 // Simple filter state
 const filterOptions = ref({
@@ -244,6 +306,13 @@ const applyFilters = async () => {
     await fetchVehicles();
 };
 
+const onBrandChange = async () => {
+    // Clear selected model when brand changes
+    selectedModel.value = null;
+    // Fetch models for selected brand
+    await fetchModels(selectedBrand.value ? [selectedBrand.value] : undefined);
+};
+
 const resetFilters = async () => {
     filterOptions.value = {
         minPrice: null,
@@ -255,6 +324,9 @@ const resetFilters = async () => {
         orderBy: 'created_at',
         orderDir: 'desc'
     };
+    selectedBrand.value = null;
+    selectedModel.value = null;
+    await fetchModels();
     await fetchVehicles();
 };
 
@@ -279,6 +351,10 @@ const fetchVehicles = async () => {
         if (filterOptions.value.maxMileage !== null) params.max_mileage = filterOptions.value.maxMileage;
         if (filterOptions.value.orderBy !== 'created_at') params.order_by = filterOptions.value.orderBy;
         if (filterOptions.value.orderDir !== 'desc') params.order_dir = filterOptions.value.orderDir;
+        
+        // Add brand and model filters
+        if (selectedBrand.value !== null) params.brand_ids = selectedBrand.value.toString();
+        if (selectedModel.value !== null) params.model_ids = selectedModel.value.toString();
 
         console.log('Filter params sent to API:', params);
         const data = await useSalableVehicleService().list(params);
@@ -292,11 +368,45 @@ const fetchVehicles = async () => {
     }
 };
 
+const fetchBrands = async () => {
+    try {
+        const data = await useBrandService().getAll();
+        brands.value = Array.isArray(data) ? data : data.data;
+    } catch (err) {
+        console.error('Error fetching brands:', err);
+    }
+};
+
+const fetchModels = async (brandIds?: number[]) => {
+    try {
+        const allModels: Model[] = [];
+        
+        if (brandIds && brandIds.length > 0) {
+            // Fetch models for each selected brand
+            for (const brandId of brandIds) {
+                const data = await useModelService().getAll(brandId);
+                const modelsData = Array.isArray(data) ? data : data.data;
+                allModels.push(...modelsData);
+            }
+        } else {
+            // Fetch all models
+            const data = await useModelService().getAll();
+            allModels.push(...(Array.isArray(data) ? data : data.data));
+        }
+        
+        models.value = allModels;
+    } catch (err) {
+        console.error('Error fetching models:', err);
+    }
+};
+
 const fetchRecipes = async () => {
     await fetchVehicles();
 };
 
 onMounted(() => {
+    fetchBrands();
+    fetchModels();
     fetchRecipes();
 });
 

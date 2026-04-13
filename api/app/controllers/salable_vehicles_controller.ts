@@ -28,6 +28,8 @@ export default class SalableVehiclesController {
             maxMileage: params.max_mileage,
             available: params.available,
             customerId: params.customer_id,
+            brandIds: params.brand_ids,
+            modelIds: params.model_ids,
             orderBy: params.order_by,
             orderDir: params.order_dir,
             preloads,

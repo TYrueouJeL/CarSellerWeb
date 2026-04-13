@@ -27,4 +27,8 @@ export interface ApiDefinition {
     index: typeof routes['brands.index']
     show: typeof routes['brands.show']
   }
+  models: {
+    index: typeof routes['models.index']
+    show: typeof routes['models.show']
+  }
 }
