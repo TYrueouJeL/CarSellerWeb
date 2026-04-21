@@ -9,8 +9,8 @@
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Prix (EUR)</h3>
                     <div class="space-y-2">
-                        <input type="number" v-model.number="filterOptions.minPrice" placeholder="Prix min" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <input type="number" v-model.number="filterOptions.maxPrice" placeholder="Prix max" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.minPrice" placeholder="Prix min" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.maxPrice" placeholder="Prix max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
                 
@@ -18,8 +18,8 @@
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Kilométrage (km)</h3>
                     <div class="space-y-2">
-                        <input type="number" v-model.number="filterOptions.minMileage" placeholder="Min" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <input type="number" v-model.number="filterOptions.maxMileage" placeholder="Max" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.minMileage" placeholder="Min" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.maxMileage" placeholder="Max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
                 
@@ -27,8 +27,8 @@
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Année</h3>
                     <div class="space-y-2">
-                        <input type="number" v-model.number="filterOptions.minYear" placeholder="Année min" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <input type="number" v-model.number="filterOptions.maxYear" placeholder="Année max" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.minYear" placeholder="Année min" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.maxYear" placeholder="Année max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
 
