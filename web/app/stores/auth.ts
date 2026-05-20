@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
         error.value = null
         
         try {
-            const data = await $fetch<{ message: string }>(`${apiUrl}/auth/signup`, {
+            const data = await $fetch<{ data: { token: string; user: User } }>(`${apiUrl}/auth/signup`, {
                 method: 'POST',
                 body: {
                     firstname,
@@ -29,9 +29,13 @@ export const useAuthStore = defineStore('auth', () => {
                 }
             })
 
+            user.value = data.data.user
+            token.value = data.data.token
+
             await navigateTo('/')
         } catch (err: any) {
             error.value = err?.data?.message ?? 'Erreur lors de l\'inscription'
+            throw err
         } finally {
             loading.value = false
         }
@@ -53,6 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
             await navigateTo('/')
         } catch (err: any) {
             error.value = err?.data?.message ?? 'Erreur lors de la connexion'
+            throw err
         } finally {
             loading.value = false
         }
