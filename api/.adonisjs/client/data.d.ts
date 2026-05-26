@@ -5,16 +5,56 @@
 
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
+import type MaintenanceRequestTransformer from '#transformers/maintenance_request_transformer'
+import type MaintenanceServiceTypeTransformer from '#transformers/maintenance_service_type_transformer'
+import type RentableVehicleTransformer from '#transformers/rentable_vehicle_transformer'
+import type RentalTransformer from '#transformers/rental_transformer'
 import type SalableVehicleTransformer from '#transformers/salable_vehicle_transformer'
+import type TicketCommentTransformer from '#transformers/ticket_comment_transformer'
+import type TicketStatusTransformer from '#transformers/ticket_status_transformer'
+import type TicketTransformer from '#transformers/ticket_transformer'
 import type UserTransformer from '#transformers/user_transformer'
+import type UserVehicleTransformer from '#transformers/user_vehicle_transformer'
 
 export namespace Data {
+  export type MaintenanceRequest = InferData<MaintenanceRequestTransformer>
+  export namespace MaintenanceRequest {
+    export type Variants = InferVariants<MaintenanceRequestTransformer>
+  }
+  export type MaintenanceServiceType = InferData<MaintenanceServiceTypeTransformer>
+  export namespace MaintenanceServiceType {
+    export type Variants = InferVariants<MaintenanceServiceTypeTransformer>
+  }
+  export type RentableVehicle = InferData<RentableVehicleTransformer>
+  export namespace RentableVehicle {
+    export type Variants = InferVariants<RentableVehicleTransformer>
+  }
+  export type Rental = InferData<RentalTransformer>
+  export namespace Rental {
+    export type Variants = InferVariants<RentalTransformer>
+  }
   export type SalableVehicle = InferData<SalableVehicleTransformer>
   export namespace SalableVehicle {
     export type Variants = InferVariants<SalableVehicleTransformer>
   }
+  export type TicketComment = InferData<TicketCommentTransformer>
+  export namespace TicketComment {
+    export type Variants = InferVariants<TicketCommentTransformer>
+  }
+  export type TicketStatus = InferData<TicketStatusTransformer>
+  export namespace TicketStatus {
+    export type Variants = InferVariants<TicketStatusTransformer>
+  }
+  export type Ticket = InferData<TicketTransformer>
+  export namespace Ticket {
+    export type Variants = InferVariants<TicketTransformer>
+  }
   export type User = InferData<UserTransformer>
   export namespace User {
     export type Variants = InferVariants<UserTransformer>
+  }
+  export type UserVehicle = InferData<UserVehicleTransformer>
+  export namespace UserVehicle {
+    export type Variants = InferVariants<UserVehicleTransformer>
   }
 }

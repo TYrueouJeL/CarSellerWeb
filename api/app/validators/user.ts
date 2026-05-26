@@ -25,3 +25,15 @@ export const loginValidator = vine.create({
   email: email(),
   password: vine.string(),
 })
+
+/**
+ * Validator for updating account profile
+ */
+export const updateProfileValidator = vine.create({
+  firstname: vine.string().trim(),
+  lastname: vine.string().trim(),
+  email: email(),
+  phoneNumber: vine.string().trim().nullable().optional(),
+  password: vine.string().minLength(8).maxLength(32).optional(),
+  passwordConfirmation: vine.string().minLength(8).maxLength(32).optional(),
+})

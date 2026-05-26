@@ -1,36 +1,31 @@
-import SalableVehicle from "#models/salable_vehicle";
+import RentableVehicle from "#models/rentable_vehicle";
 import { ModelPaginatorContract } from "@adonisjs/lucid/types/model";
-import { CreateSalableVehicleDTO, UpdateSalableVehicleDTO } from "../dto/salableVehicleDTO.ts";
+import { CreateRentableVehicleDTO, UpdateRentableVehicleDTO } from "../dto/rentableVehicleDTO.ts";
 
 interface ListOptions {
     page?: number;
     limit?: number;
-    // Prix
     minPrice?: number;
     maxPrice?: number;
-    // Véhicule
     modelId?: number;
     year?: number;
     minYear?: number;
     maxYear?: number;
     minMileage?: number;
     maxMileage?: number;
-    // Disponibilité
     available?: boolean;
     customerId?: number;
-    // Filtres par marque et modèle
     brandIds?: string;
     modelIds?: string;
-    // Tri
     orderBy?: "price" | "mileage" | "year" | "created_at";
     orderDir?: "asc" | "desc";
-    // Relations
     preloads?: string[];
 }
 
-export default class SalableVehicleService {
+export default class RentableVehicleService {
     public async list(options: ListOptions = {}): Promise<
-    ModelPaginatorContract<SalableVehicle> | SalableVehicle[]> {
+        ModelPaginatorContract<RentableVehicle> | RentableVehicle[]
+    > {
         const {
             page,
             limit = 20,
@@ -51,78 +46,64 @@ export default class SalableVehicleService {
             preloads = [],
         } = options;
 
-        const query = SalableVehicle.query().where('type', 'salable_vehicle');
+        const query = RentableVehicle.query().where('type', 'rentable_vehicle');
 
-        // Prix
-        if (minPrice !== undefined) query.where("price", ">=", minPrice);
-        if (maxPrice !== undefined) query.where("price", "<=", maxPrice);
+        if (minPrice !== undefined) query.where("daily_price", ">=", minPrice);
+        if (maxPrice !== undefined) query.where("daily_price", "<=", maxPrice);
 
-        // Modèle
         if (modelId !== undefined) query.where("model_id", modelId);
 
-        // Année
         if (year !== undefined) query.where("year", year);
         if (minYear !== undefined) query.where("year", ">=", minYear);
         if (maxYear !== undefined) query.where("year", "<=", maxYear);
 
-        // Kilométrage
         if (minMileage !== undefined) query.where("mileage", ">=", minMileage);
         if (maxMileage !== undefined) query.where("mileage", "<=", maxMileage);
 
-        // Disponibilité (pas encore vendu/loué)
         if (available === true) query.whereNull("customer_id");
         if (available === false) query.whereNotNull("customer_id");
         if (customerId !== undefined) query.where("customer_id", customerId);
 
-        // Filtres par marque et modèle
         if (brandIds !== undefined) {
             const brandIdArray = brandIds.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
             if (brandIdArray.length > 0) {
                 if (brandIdArray.length === 1) {
-                    // Cas simple : une seule marque
                     query.whereHas('model', (modelQuery) => {
                         modelQuery.where('brandId', brandIdArray[0]);
                     });
                 } else {
-                    // Cas multiple : plusieurs marques
                     const placeholders = brandIdArray.map(() => '?').join(',');
                     query.whereRaw(`model_id IN (SELECT id FROM model WHERE brandId IN (${placeholders}))`, brandIdArray);
                 }
             }
         }
-        
+
         if (modelIds !== undefined) {
             const modelIdArray = modelIds.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
             if (modelIdArray.length > 0) {
                 if (modelIdArray.length === 1) {
-                    // Cas simple : un seul modèle
                     query.where('modelId', modelIdArray[0]);
                 } else {
-                    // Cas multiple : plusieurs modèles
                     const placeholders = modelIdArray.map(() => '?').join(',');
                     query.whereRaw(`model_id IN (${placeholders})`, modelIdArray);
                 }
             }
         }
 
-        // Tri
-        query.orderBy(orderBy, orderDir);
+        const orderColumn = orderBy === "price" ? "daily_price" : orderBy;
+        query.orderBy(orderColumn, orderDir);
 
-        // Relations - handle nested preloads
         for (const preloadPath of preloads) {
             const parts = preloadPath.split('.');
             if (parts.length === 1) {
-                // Simple preload like 'model'
                 query.preload(parts[0] as any);
             } else if (parts.length === 2) {
-                // Nested preload like 'model.brand'
                 query.preload(parts[0] as any, (modelQuery) => {
                     modelQuery.preload(parts[1] as any);
                 });
             }
         }
 
-        // Pagination optionnelle
         if (page !== undefined) {
             return await query.paginate(page, limit);
         }
@@ -130,8 +111,8 @@ export default class SalableVehicleService {
         return await query;
     }
 
-    public async findById(vehicleId: number, preloads: string[] = []): Promise<SalableVehicle | null> {
-        const query = SalableVehicle.query().where('id', vehicleId).where('type', 'salable_vehicle');
+    public async findById(vehicleId: number, preloads: string[] = []): Promise<RentableVehicle | null> {
+        const query = RentableVehicle.query().where('id', vehicleId).where('type', 'rentable_vehicle');
 
         for (const preloadPath of preloads) {
             const parts = preloadPath.split('.');
@@ -147,14 +128,14 @@ export default class SalableVehicleService {
         return await query.first();
     }
 
-    public async create(data: CreateSalableVehicleDTO): Promise<SalableVehicle> {
-        return await SalableVehicle.create({ ...data, type: 'salable_vehicle' });
+    public async create(data: CreateRentableVehicleDTO): Promise<RentableVehicle> {
+        return await RentableVehicle.create({ ...data, type: 'rentable_vehicle' });
     }
 
-    public async update(vehicleId: number, data: UpdateSalableVehicleDTO): Promise<SalableVehicle> {
-        const vehicle = await SalableVehicle.query()
+    public async update(vehicleId: number, data: UpdateRentableVehicleDTO): Promise<RentableVehicle> {
+        const vehicle = await RentableVehicle.query()
             .where('id', vehicleId)
-            .where('type', 'salable_vehicle')
+            .where('type', 'rentable_vehicle')
             .first();
         if (!vehicle) {
             throw new Error("Vehicle not found");
@@ -165,37 +146,13 @@ export default class SalableVehicleService {
     }
 
     public async delete(vehicleId: number): Promise<void> {
-        const vehicle = await SalableVehicle.query()
+        const vehicle = await RentableVehicle.query()
             .where('id', vehicleId)
-            .where('type', 'salable_vehicle')
+            .where('type', 'rentable_vehicle')
             .first();
         if (!vehicle) {
             throw new Error("Vehicle not found");
         }
         await vehicle.delete();
-    }
-
-    public async purchase(vehicleId: number, customerId: number): Promise<SalableVehicle> {
-        const vehicle = await SalableVehicle.query()
-            .where('id', vehicleId)
-            .where('type', 'salable_vehicle')
-            .whereNull('customer_id')
-            .first();
-
-        if (!vehicle) {
-            throw new Error('VEHICLE_UNAVAILABLE');
-        }
-
-        vehicle.merge({
-            type: 'user_vehicle',
-            customerId,
-            dailyPrice: null,
-        });
-        await vehicle.save();
-        await vehicle.load('model', (modelQuery) => {
-            modelQuery.preload('brand');
-        });
-
-        return vehicle;
     }
 }

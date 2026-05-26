@@ -6,8 +6,11 @@
 export const controllers = {
   AccessToken: () => import('#controllers/access_token_controller'),
   Brands: () => import('#controllers/brands_controller'),
+  MaintenanceRequests: () => import('#controllers/maintenance_requests_controller'),
   Models: () => import('#controllers/models_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Profile: () => import('#controllers/profile_controller'),
+  RentableVehicles: () => import('#controllers/rentable_vehicles_controller'),
   SalableVehicles: () => import('#controllers/salable_vehicles_controller'),
+  Tickets: () => import('#controllers/tickets_controller'),
 }

@@ -58,6 +58,86 @@ export class CategorySchema extends BaseModel {
   declare updatedAt: DateTime
 }
 
+export class MaintenanceSchema extends BaseModel {
+  static $columns = ['createdAt', 'customerId', 'date', 'id', 'maintenanceRequestId', 'maintenanceStatusId', 'technicianId', 'typeId', 'updatedAt', 'vehicleId'] as const
+  $columns = MaintenanceSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare customerId: number
+  @column.dateTime()
+  declare date: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare maintenanceRequestId: number
+  @column()
+  declare maintenanceStatusId: number
+  @column()
+  declare technicianId: number
+  @column()
+  declare typeId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare vehicleId: number
+}
+
+export class MaintenanceRequestSchema extends BaseModel {
+  static $columns = ['approvedDate', 'createdAt', 'customerId', 'id', 'requestDate', 'technicianId', 'typeId', 'updatedAt', 'vehicleId'] as const
+  $columns = MaintenanceRequestSchema.$columns
+  @column.dateTime()
+  declare approvedDate: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare customerId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare requestDate: DateTime
+  @column()
+  declare technicianId: number
+  @column()
+  declare typeId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare vehicleId: number
+}
+
+export class MaintenanceServiceTypeSchema extends BaseModel {
+  static $columns = ['createdAt', 'description', 'duration', 'id', 'name', 'price', 'updatedAt'] as const
+  $columns = MaintenanceServiceTypeSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string
+  @column()
+  declare duration: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column()
+  declare price: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class MaintenanceStatusSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = MaintenanceStatusSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
 export class ModelSchema extends BaseModel {
   static $columns = ['brandId', 'categoryId', 'createdAt', 'id', 'name', 'updatedAt'] as const
   $columns = ModelSchema.$columns
@@ -65,6 +145,78 @@ export class ModelSchema extends BaseModel {
   declare brandId: number | null
   @column()
   declare categoryId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+}
+
+export class RentalSchema extends BaseModel {
+  static $columns = ['createdAt', 'endDate', 'id', 'startDate', 'totalPrice', 'updatedAt', 'userId', 'vehicleId'] as const
+  $columns = RentalSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare endDate: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column.date()
+  declare startDate: DateTime
+  @column()
+  declare totalPrice: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare userId: number
+  @column()
+  declare vehicleId: number
+}
+
+export class TicketSchema extends BaseModel {
+  static $columns = ['createdAt', 'customerId', 'description', 'id', 'statusId', 'technicianId', 'title', 'updatedAt'] as const
+  $columns = TicketSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare customerId: number
+  @column()
+  declare description: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare statusId: number
+  @column()
+  declare technicianId: number | null
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TicketCommentSchema extends BaseModel {
+  static $columns = ['authorId', 'comment', 'createdAt', 'id', 'ticketId', 'updatedAt'] as const
+  $columns = TicketCommentSchema.$columns
+  @column()
+  declare authorId: number
+  @column()
+  declare comment: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare ticketId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TicketStatusSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = TicketStatusSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })

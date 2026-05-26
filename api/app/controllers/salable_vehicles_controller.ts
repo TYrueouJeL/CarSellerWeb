@@ -2,6 +2,7 @@ import type { HttpContext } from "@adonisjs/core/http";
 import SalableVehicleService from "#services/salableVehicleService";
 import { createSalableVehicleValidator, listSalableVehiclesValidator, updateSalableVehicleValidator } from "#validators/salableVehicle";
 import SalableVehicleTransformer from "#transformers/salable_vehicle_transformer";
+import UserVehicleTransformer from "#transformers/user_vehicle_transformer";
 import { ModelPaginatorContract } from "@adonisjs/lucid/types/model";
 import SalableVehicle from "#models/salable_vehicle";
 
@@ -82,5 +83,23 @@ export default class SalableVehiclesController {
         const vehicleId = params.vehicleId;
         await this.salableVehicleService.delete(vehicleId);
         return response.noContent();
+    }
+
+    public async purchase({ params, response, auth }: HttpContext) {
+        const user = auth.getUserOrFail();
+
+        try {
+            const vehicle = await this.salableVehicleService.purchase(params.vehicleId, user.id);
+
+            return response.ok({
+                data: UserVehicleTransformer.transform(vehicle),
+                message: 'Véhicule acheté avec succès',
+            });
+        } catch (error) {
+            if (error instanceof Error && error.message === 'VEHICLE_UNAVAILABLE') {
+                return response.notFound({ message: 'Ce véhicule n\'est plus disponible à la vente' });
+            }
+            throw error;
+        }
     }
 }
