@@ -2,7 +2,6 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import UserFactory from '../../app/factory/userFactory.ts'
 
 export default class UserSeeder extends BaseSeeder {
-  static environment = ['development', 'testing']
 
   async run() {
     await UserFactory.createMany(5)

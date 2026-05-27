@@ -14,31 +14,31 @@ export default class extends BaseSeeder {
       {
         name: 'Contrôle technique',
         description: 'Contrôle réglementaire du véhicule (pollution, freins, éclairage…).',
-        price: 79.9,
+        price: '79.9',
         duration: 45,
       },
       {
         name: 'Vidange',
         description: 'Remplacement huile moteur et filtre à huile.',
-        price: 89.0,
+        price: '89.0',
         duration: 60,
       },
       {
         name: 'Joint de culasse',
         description: 'Remplacement du joint de culasse et contrôles associés.',
-        price: 650.0,
+        price: '650.0',
         duration: 480,
       },
       {
         name: 'Révision complète',
         description: 'Contrôle des points de sécurité et remplacement des consommables.',
-        price: 199.0,
+        price: '199.0',
         duration: 120,
       },
       {
         name: 'Diagnostic électronique',
         description: 'Lecture des codes défaut et rapport détaillé.',
-        price: 59.0,
+        price: '59.0',
         duration: 30,
       },
     ]

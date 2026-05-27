@@ -52,7 +52,7 @@ export default class MaintenanceRequestTransformer {
       id: request.id,
       date: date!,
       time,
-      subject: request.$preloaded.serviceType?.name ?? 'Rendez-vous',
+      subject: (request.$preloaded.serviceType as any)?.name ?? 'Rendez-vous',
       status: request.approvedDate ? 'Approuvé' : 'En attente',
     }
   }
