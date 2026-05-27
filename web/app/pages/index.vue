@@ -88,7 +88,7 @@
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Dernières arrivées</h2>
-            <p class="mt-2 text-gray-600">Notre sélection de véhicules récemment ajoutés</p>
+            <p class="mt-2 text-gray-600">Les 4 derniers véhicules à vendre</p>
           </div>
           <NuxtLink
             to="/ventes"
@@ -107,10 +107,11 @@
         </div>
 
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div
+          <NuxtLink
             v-for="vehicle in vehicles"
             :key="vehicle.id"
-            class="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+            :to="`/ventes/${vehicle.id}`"
+            class="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow block"
           >
             <div class="h-36 bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
               <svg class="w-14 h-14 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +125,7 @@
               <p class="text-sm text-gray-500 mt-1">{{ vehicle.year }} · {{ formatMileage(vehicle.mileage) }}</p>
               <p class="text-xl font-bold text-blue-600 mt-3">{{ formatPrice(vehicle.price) }}</p>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -165,10 +166,26 @@
 </template>
 
 <script setup lang="ts">
+import { useSalableVehicleService } from '~/services/salableVehicleService'
+
 const auth = useAuthStore()
 
-const vehicles = ref<any[]>([])
-const loadingVehicles = ref(true)
+const { data: vehiclesResponse, pending: loadingVehicles } = await useAsyncData(
+  'home-latest-salable-vehicles',
+  () => useSalableVehicleService().list({
+    preloads: ['model.brand'],
+    page: 1,
+    limit: 4,
+    orderBy: 'created_at',
+    orderDir: 'desc',
+  }),
+)
+
+const vehicles = computed(() => {
+  const data = vehiclesResponse.value
+  if (!data) return []
+  return Array.isArray(data) ? data : data.data ?? []
+})
 
 function formatPrice(price: number | null) {
   if (price === null) return 'Prix sur demande'
@@ -178,22 +195,6 @@ function formatPrice(price: number | null) {
 function formatMileage(mileage: number) {
   return new Intl.NumberFormat('fr-FR').format(mileage) + ' km'
 }
-
-onMounted(async () => {
-  try {
-    const data = await useSalableVehicleService().list({
-      preloads: ['model.brand'],
-      limit: 4,
-      orderBy: 'created_at',
-      orderDir: 'desc',
-    })
-    vehicles.value = Array.isArray(data) ? data : data.data
-  } catch {
-    vehicles.value = []
-  } finally {
-    loadingVehicles.value = false
-  }
-})
 
 useHead({ title: 'Accueil' })
 </script>

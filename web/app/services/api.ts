@@ -10,9 +10,13 @@ export const useApiClient = () => {
             }
         },
         onResponseError({ response }) {
-            if (response.status === 401) {
-                authStore.logout()
-                navigateTo('/login')
+            if (response.status !== 401) return
+
+            authStore.clearSession()
+
+            const route = useRoute()
+            if (!route.path.startsWith('/auth')) {
+                navigateTo('/auth/login')
             }
         }
     })

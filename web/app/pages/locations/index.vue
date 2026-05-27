@@ -4,17 +4,17 @@
         <aside class="hidden lg:block w-64 bg-white shadow-lg h-screen overflow-y-auto">
             <div class="p-6">
                 <h2 class="text-lg font-semibold text-gray-900 mb-6">Filtres</h2>
-                
-                <!-- Filtre Prix -->
+
+                <!-- Filtre Tarif journalier -->
                 <div class="mb-6">
-                    <h3 class="text-sm font-medium text-gray-700 mb-3">Prix (EUR)</h3>
+                    <h3 class="text-sm font-medium text-gray-700 mb-3">Tarif journalier (EUR)</h3>
                     <div class="space-y-2">
-                        <input type="number" v-model.number="filterOptions.minPrice" placeholder="Prix min" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <input type="number" v-model.number="filterOptions.maxPrice" placeholder="Prix max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.minPrice" placeholder="Min" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <input type="number" v-model.number="filterOptions.maxPrice" placeholder="Max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
-                
-                <!-- Filtre Kilométrage --> 
+
+                <!-- Filtre Kilométrage -->
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Kilométrage (km)</h3>
                     <div class="space-y-2">
@@ -22,7 +22,7 @@
                         <input type="number" v-model.number="filterOptions.maxMileage" placeholder="Max" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                 </div>
-                
+
                 <!-- Filtre Année -->
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Année</h3>
@@ -37,9 +37,9 @@
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Marques</h3>
                     <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2">
                         <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input 
-                                type="radio" 
-                                :value="null" 
+                            <input
+                                type="radio"
+                                :value="null"
                                 v-model="selectedBrand"
                                 @change="onBrandChange"
                                 class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
@@ -47,9 +47,9 @@
                             <span class="text-sm text-gray-700">Toutes</span>
                         </label>
                         <label v-for="brand in brands" :key="brand.id" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input 
-                                type="radio" 
-                                :value="brand.id" 
+                            <input
+                                type="radio"
+                                :value="brand.id"
                                 v-model="selectedBrand"
                                 @change="onBrandChange"
                                 class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
@@ -64,18 +64,18 @@
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Modèles</h3>
                     <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2">
                         <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input 
-                                type="radio" 
-                                :value="null" 
+                            <input
+                                type="radio"
+                                :value="null"
                                 v-model="selectedModel"
                                 class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                             >
                             <span class="text-sm text-gray-700">Tous</span>
                         </label>
                         <label v-for="model in models" :key="model.id" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
-                            <input 
-                                type="radio" 
-                                :value="model.id" 
+                            <input
+                                type="radio"
+                                :value="model.id"
                                 v-model="selectedModel"
                                 class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                             >
@@ -83,15 +83,14 @@
                         </label>
                     </div>
                 </div>
-                
-                                
+
                 <!-- Filtre Tri -->
                 <div class="mb-6">
                     <h3 class="text-sm font-medium text-gray-700 mb-3">Trier par</h3>
                     <div class="space-y-2">
                         <select v-model="filterOptions.orderBy" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
                             <option value="created_at">Date d'ajout</option>
-                            <option value="price">Prix</option>
+                            <option value="price">Tarif journalier</option>
                             <option value="mileage">Kilométrage</option>
                             <option value="year">Année</option>
                         </select>
@@ -101,7 +100,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <!-- Boutons d'action -->
                 <div class="flex space-x-2">
                     <button @click="applyFilters" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium">
@@ -119,7 +118,7 @@
             <!-- Header Mobile -->
             <div class="bg-white shadow-sm border-b lg:hidden">
                 <div class="px-4 py-4 flex justify-between items-center">
-                    <h1 class="text-xl font-bold text-gray-900">Véhicules d'occasion</h1>
+                    <h1 class="text-xl font-bold text-gray-900">Véhicules en location</h1>
                     <button class="p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
@@ -133,8 +132,8 @@
                 <div class="max-w-7xl mx-auto px-6 py-6">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h1 class="text-3xl font-bold text-gray-900">Véhicules d'occasion</h1>
-                            <p class="mt-2 text-gray-600">Découvrez notre sélection de véhicules de qualité</p>
+                            <h1 class="text-3xl font-bold text-gray-900">Véhicules en location</h1>
+                            <p class="mt-2 text-gray-600">Louez un véhicule pour vos déplacements</p>
                         </div>
                         <div class="flex items-center space-x-2 text-sm text-gray-500">
                             <span>{{ total }} véhicules</span>
@@ -142,8 +141,8 @@
                     </div>
                 </div>
             </div>
-        
-        <!-- Loading State -->
+
+            <!-- Loading State -->
             <div v-if="loading" class="flex justify-center items-center py-20">
                 <div class="text-center">
                     <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -156,7 +155,7 @@
                 <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
                     <div class="text-red-600 text-lg font-medium">Erreur de chargement</div>
                     <p class="mt-2 text-red-500">{{ error }}</p>
-                    <button @click="fetchRecipes" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                    <button @click="fetchVehicles" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
                         Réessayer
                     </button>
                 </div>
@@ -166,27 +165,13 @@
             <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div v-if="vehicles.length === 0" class="text-center py-20">
                     <div class="text-gray-400 text-lg">Aucun véhicule disponible</div>
-                    <p class="mt-2 text-gray-500">Revenez consulter nos prochaines arrivées</p>
+                    <p class="mt-2 text-gray-500">Revenez consulter nos prochaines disponibilités</p>
                 </div>
-                
-                <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <div v-for="vehicle in vehicles" :key="vehicle.id" 
-                         class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
-                        
-                        <!-- Vehicle Image Placeholder -->
-                        <!-- <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
-                            <div class="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            <div class="absolute top-2 right-2">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Disponible
-                                </span>
-                            </div>
-                        </div> -->
 
-                        <!-- Vehicle Info -->
+                <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div v-for="vehicle in vehicles" :key="vehicle.id"
+                         class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+
                         <div class="p-4">
                             <div class="mb-3">
                                 <h3 class="text-lg font-semibold text-gray-900">
@@ -206,17 +191,19 @@
                                 </div>
                             </div>
 
-                            <!-- Price -->
                             <div class="border-t pt-3">
                                 <div class="flex items-center justify-between">
-                                    <div class="text-2xl font-bold text-blue-600">
-                                        {{ formatPrice(vehicle.price) }}
+                                    <div>
+                                        <div class="text-2xl font-bold text-blue-600">
+                                            {{ formatDailyPrice(vehicle.dailyPrice) }}
+                                        </div>
+                                        <p class="text-xs text-gray-500">par jour</p>
                                     </div>
                                     <NuxtLink
-                                        :to="`/ventes/${vehicle.id}`"
+                                        :to="`/locations/${vehicle.id}`"
                                         class="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
                                     >
-                                        Détails
+                                        Louer
                                     </NuxtLink>
                                 </div>
                             </div>
@@ -226,12 +213,12 @@
             </div>
 
             <!-- Pagination -->
-            <div class="flex flex-col items-center space-y-4 mt-8">
+            <div class="flex flex-col items-center space-y-4 mt-8 pb-8">
                 <div class="text-sm text-gray-600 text-center">
                     Affichage de {{ (currentPage - 1) * 12 + 1 }} à {{ Math.min(currentPage * 12, total) }} sur {{ total }} véhicules
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button 
+                    <button
                         @click="changePage(currentPage - 1)"
                         :disabled="currentPage === 1"
                         class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -241,7 +228,7 @@
                     <span class="text-sm text-gray-600">
                         Page {{ currentPage }} sur {{ totalPages }}
                     </span>
-                    <button 
+                    <button
                         @click="changePage(currentPage + 1)"
                         :disabled="currentPage === totalPages"
                         class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -255,7 +242,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSalableVehicleService } from '~/services/salableVehicleService';
+import { useRentableVehicleService } from '~/services/rentableVehicleService';
 import { useBrandService } from '~/services/brandService';
 import { useModelService } from '~/services/modelService';
 import type { Brand } from '~/services/brandService';
@@ -268,13 +255,11 @@ const total = ref<number>(0);
 const currentPage = ref<number>(1);
 const totalPages = ref<number>(1);
 
-// Brands and models data
 const brands = ref<Brand[]>([]);
 const models = ref<Model[]>([]);
 const selectedBrand = ref<number | null>(null);
 const selectedModel = ref<number | null>(null);
 
-// Simple filter state
 const filterOptions = ref({
     minPrice: null as number | null,
     maxPrice: null as number | null,
@@ -286,8 +271,8 @@ const filterOptions = ref({
     orderDir: 'desc' as 'asc' | 'desc'
 });
 
-const formatPrice = (price: number | null) => {
-    if (price === null) return 'Prix sur demande';
+const formatDailyPrice = (price: number | null) => {
+    if (price === null) return 'Tarif sur demande';
     return new Intl.NumberFormat('fr-FR', {
         style: 'currency',
         currency: 'EUR'
@@ -310,9 +295,7 @@ const applyFilters = async () => {
 };
 
 const onBrandChange = async () => {
-    // Clear selected model when brand changes
     selectedModel.value = null;
-    // Fetch models for selected brand
     await fetchModels(selectedBrand.value ? [selectedBrand.value] : undefined);
 };
 
@@ -336,16 +319,14 @@ const resetFilters = async () => {
 const fetchVehicles = async () => {
     loading.value = true;
     error.value = null;
-    
+
     try {
-        // Build API parameters from filterOptions
         const params: any = {
             preloads: ['model.brand'],
             page: currentPage.value,
             limit: 12
         };
 
-        // Add non-null filter values with correct backend naming
         if (filterOptions.value.minPrice !== null) params.min_price = filterOptions.value.minPrice;
         if (filterOptions.value.maxPrice !== null) params.max_price = filterOptions.value.maxPrice;
         if (filterOptions.value.minYear !== null) params.min_year = filterOptions.value.minYear;
@@ -354,16 +335,16 @@ const fetchVehicles = async () => {
         if (filterOptions.value.maxMileage !== null) params.max_mileage = filterOptions.value.maxMileage;
         if (filterOptions.value.orderBy !== 'created_at') params.order_by = filterOptions.value.orderBy;
         if (filterOptions.value.orderDir !== 'desc') params.order_dir = filterOptions.value.orderDir;
-        
-        // Add brand and model filters
+
         if (selectedBrand.value !== null) params.brand_ids = selectedBrand.value.toString();
         if (selectedModel.value !== null) params.model_ids = selectedModel.value.toString();
 
-        console.log('Filter params sent to API:', params);
-        const data = await useSalableVehicleService().list(params);
+        const data = await useRentableVehicleService().list(params);
         vehicles.value = Array.isArray(data) ? data : data.data;
         total.value = Array.isArray(data) ? data.length : data.meta.total || 0;
         totalPages.value = Array.isArray(data) ? 1 : data.meta.lastPage || 1;
+
+        console.log('Vehicles:', vehicles.value);
     } catch (err) {
         error.value = err instanceof Error ? err.message : 'Erreur inconnue';
     } finally {
@@ -383,37 +364,31 @@ const fetchBrands = async () => {
 const fetchModels = async (brandIds?: number[]) => {
     try {
         const allModels: Model[] = [];
-        
+
         if (brandIds && brandIds.length > 0) {
-            // Fetch models for each selected brand
             for (const brandId of brandIds) {
                 const data = await useModelService().getAll(brandId);
                 const modelsData = Array.isArray(data) ? data : data.data;
                 allModels.push(...modelsData);
             }
         } else {
-            // Fetch all models
             const data = await useModelService().getAll();
             allModels.push(...(Array.isArray(data) ? data : data.data));
         }
-        
+
         models.value = allModels;
     } catch (err) {
         console.error('Error fetching models:', err);
     }
 };
 
-const fetchRecipes = async () => {
-    await fetchVehicles();
-};
-
 onMounted(() => {
     fetchBrands();
     fetchModels();
-    fetchRecipes();
+    fetchVehicles();
 });
 
 useHead({
-  title: 'Ventes',
+  title: 'Locations',
 })
 </script>

@@ -1,6 +1,5 @@
 import type { User } from "~/types/user"
 import { defineStore } from "pinia"
-import { useApiClient } from "~/services/api"
 
 export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
@@ -11,7 +10,14 @@ export const useAuthStore = defineStore('auth', () => {
     const initializing = ref(true)
     const error = ref<string | null>(null)
 
+    let initPromise: Promise<void> | null = null
+
     const isLoggedIn = computed(() => !!token.value)
+
+    function clearSession() {
+        user.value = null
+        token.value = null
+    }
 
     async function register(firstname: string, lastname: string, email: string, password: string, passwordConfirmation: string) {
         loading.value = true
@@ -69,26 +75,52 @@ export const useAuthStore = defineStore('auth', () => {
             return
         }
 
-        const api = useApiClient()
         try {
-            const data = await api<{ data: { user: User } }>(`/account/profile`)
-
+            const data = await $fetch<{ data: { user: User } }>(`${apiUrl}/account/profile`, {
+                headers: { Authorization: `Bearer ${token.value}` },
+            })
             user.value = data.data.user
         } catch {
-            token.value = null
+            clearSession()
         } finally {
             initializing.value = false
         }
     }
 
-    async function logout() {
-        const api = useApiClient()
+    async function ensureInitialized() {
+        if (initPromise) {
+            await initPromise
+            return
+        }
+        if (!initializing.value) return
+
+        initPromise = me()
         try {
-            await api(`/auth/logout`, { method: 'POST' })
-        } catch {}
-        
-        user.value = null
-        token.value = null
+            await initPromise
+        } finally {
+            initPromise = null
+        }
+    }
+
+    function setUser(updated: User) {
+        user.value = updated
+    }
+
+    async function logout() {
+        const currentToken = token.value
+        clearSession()
+
+        if (currentToken) {
+            try {
+                await $fetch(`${apiUrl}/auth/logout`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${currentToken}` },
+                })
+            } catch {
+                // session déjà invalide côté serveur
+            }
+        }
+
         await navigateTo('/')
     }
 
@@ -99,9 +131,12 @@ export const useAuthStore = defineStore('auth', () => {
         initializing,
         error,
         isLoggedIn,
+        clearSession,
         register,
         login,
         me,
+        ensureInitialized,
+        setUser,
         logout
     }
 })

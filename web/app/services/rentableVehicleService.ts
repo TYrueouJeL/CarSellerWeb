@@ -1,43 +1,40 @@
 import type { AdonisPage, ApiResponse } from "~/types/api"
 import { useApiClient } from "./api"
-import type { SalableVehicle, CreateSalableVehicleDTO, UpdateSalableVehicleDTO } from "~/types/salableVehicle"
-import type { UserVehicle } from "~/types/userVehicle"
+import type { RentableVehicle, CreateRentableVehicleDTO, UpdateRentableVehicleDTO } from "~/types/rentableVehicle"
+import type { Rental, RentalPeriod } from "~/types/rental"
 
-export interface SalableVehicleListOptions {
+export interface RentableVehicleListOptions {
   page?: number
   limit?: number
-  // Prix
   minPrice?: number
   maxPrice?: number
-  // Véhicule
   modelId?: number
   year?: number
   minYear?: number
   maxYear?: number
   minMileage?: number
   maxMileage?: number
-  // Disponibilité
   available?: boolean
   customerId?: number
-  // Tri
   orderBy?: 'price' | 'mileage' | 'year' | 'created_at'
   orderDir?: 'asc' | 'desc'
-  // Relations
   preloads?: string[]
 }
 
-export const useSalableVehicleService = () => {
+export interface RentVehicleDTO {
+  startDate: string
+  endDate: string
+}
+
+export const useRentableVehicleService = () => {
     const api = useApiClient()
 
     return {
-        list: (options: SalableVehicleListOptions = {}) => {
+        list: (options: RentableVehicleListOptions = {}) => {
             const { orderBy, orderDir, minPrice, maxPrice, modelId, minYear, maxYear, minMileage, maxMileage, customerId, preloads, ...rest } = options
             const params: Record<string, unknown> = { ...rest }
 
-            if (preloads?.length) {
-                params.preloads = preloads.join(',')
-            }
-
+            if (preloads?.length) params.preloads = preloads.join(',')
             if (minPrice !== undefined) params.min_price = minPrice
             if (maxPrice !== undefined) params.max_price = maxPrice
             if (modelId !== undefined) params.model_id = modelId
@@ -49,39 +46,50 @@ export const useSalableVehicleService = () => {
             if (orderBy !== undefined) params.order_by = orderBy
             if (orderDir !== undefined) params.order_dir = orderDir
 
-            return api<AdonisPage<SalableVehicle> | SalableVehicle[]>(
-                '/salablevehicle',
+            return api<AdonisPage<RentableVehicle> | RentableVehicle[]>(
+                '/rentablevehicle',
                 { params }
             )
         },
 
         findById: (id: number, preloads: string[] = []) =>
-            api<ApiResponse<SalableVehicle>>(
-                `/salablevehicle/${id}`,
+            api<ApiResponse<RentableVehicle>>(
+                `/rentablevehicle/${id}`,
                 { params: preloads.length ? { preloads: preloads.join(',') } : undefined }
             ),
 
-        purchase: (id: number) =>
-            api<ApiResponse<UserVehicle> & { message?: string }>(
-                `/salablevehicle/${id}/purchase`,
-                { method: 'POST' }
+        checkAvailability: (id: number, dates: RentVehicleDTO) =>
+            api<ApiResponse<{ available: boolean }>>(
+                `/rentablevehicle/${id}/availability`,
+                { params: dates }
             ),
 
-        create: (body: CreateSalableVehicleDTO) =>
-            api<ApiResponse<SalableVehicle>>(
-                '/salablevehicle',
+        rent: (id: number, body: RentVehicleDTO) =>
+            api<ApiResponse<Rental> & { message?: string }>(
+                `/rentablevehicle/${id}/rent`,
                 { method: 'POST', body }
             ),
 
-        update: (id: number, body: UpdateSalableVehicleDTO) =>
-            api<ApiResponse<SalableVehicle>>(
-                `/salablevehicle/${id}`,
+        getBookedPeriods: (id: number) =>
+            api<ApiResponse<RentalPeriod[]>>(
+                `/rentablevehicle/${id}/rentals`
+            ),
+
+        create: (body: CreateRentableVehicleDTO) =>
+            api<ApiResponse<RentableVehicle>>(
+                '/rentablevehicle',
+                { method: 'POST', body }
+            ),
+
+        update: (id: number, body: UpdateRentableVehicleDTO) =>
+            api<ApiResponse<RentableVehicle>>(
+                `/rentablevehicle/${id}`,
                 { method: 'PUT', body }
             ),
 
         delete: (id: number) =>
-            api<ApiResponse<SalableVehicle>>(
-                `/salablevehicle/${id}`,
+            api<ApiResponse<RentableVehicle>>(
+                `/rentablevehicle/${id}`,
                 { method: 'DELETE' }
             )
     }
