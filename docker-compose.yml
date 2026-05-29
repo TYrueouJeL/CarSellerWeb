@@ -1,0 +1,47 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: carseller_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: carseller
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  api:
+    image: tyrueoujel/carseller-api:latest
+    container_name: carseller_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3333
+      HOST: 0.0.0.0
+      LOG_LEVEL: info
+      APP_KEY: 7BH7ni8aBrTox38HCj_jTHhdCVm5QemP
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: carseller
+    ports:
+      - "3333:3333"
+    depends_on:
+      - mysql
+
+  web:
+    image: tyrueoujel/carseller-web:latest
+    container_name: carseller_web
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3333
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  mysql_data:
