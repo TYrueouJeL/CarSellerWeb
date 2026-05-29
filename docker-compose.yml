@@ -22,7 +22,7 @@ services:
       HOST: 0.0.0.0
       LOG_LEVEL: info
       APP_KEY: 7BH7ni8aBrTox38HCj_jTHhdCVm5QemP
-      APP_URL: http://localhost:3333
+      APP_URL: http://10.192.95.252:3333
       SESSION_DRIVER: cookie
       DB_HOST: mysql
       DB_PORT: 3306
@@ -39,7 +39,7 @@ services:
     container_name: carseller_web
     restart: unless-stopped
     environment:
-      VITE_API_URL: http://localhost:3333
+      VITE_API_URL: http://10.192.95.252:3333
     ports:
       - "3000:3000"
     depends_on:
