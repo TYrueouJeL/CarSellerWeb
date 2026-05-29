@@ -22,11 +22,13 @@ services:
       HOST: 0.0.0.0
       LOG_LEVEL: info
       APP_KEY: 7BH7ni8aBrTox38HCj_jTHhdCVm5QemP
+      APP_URL: http://localhost:3333
+      SESSION_DRIVER: cookie
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root
-      DB_NAME: carseller
+      DB_DATABASE: carseller
     ports:
       - "3333:3333"
     depends_on:
