@@ -9,8 +9,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt'
   ],
   runtimeConfig: {
+    apiUrl: process.env.NUXT_API_URL || 'http://api:3333',
     public: {
-      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3333'
+      apiUrl: '/api/'
     }
   },
   notify: {
