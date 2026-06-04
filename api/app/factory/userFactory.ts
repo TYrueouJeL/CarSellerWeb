@@ -18,11 +18,12 @@ export default class UserFactory {
             lastname: data.lastname || faker.person.lastName(),
             email: data.email || faker.internet.email(),
             password: data.password || 'password123',
-            roles: JSON.stringify(['customer']),
+            roles: JSON.stringify(['ROLE_CUSTOMER']),
             type: 'customer'
         })
 
         await VehicleFactory.createMany(5, 'user_vehicle', user.id);
+        return user;
     }
 
     static async createMany(count: number) {
